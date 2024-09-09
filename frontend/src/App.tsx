@@ -1,11 +1,17 @@
 import React from 'react';
 import './App.css';
+import {Navbar} from "./layouts/NavbarAndFooter/Navbar";
+import {ExplorePage} from "./layouts/Homepage/ExplorePage";
+import {Carousel} from "./layouts/Homepage/Carousel";
 
 function App() {
   return (
-    <div className="App">
-      <h1>Full stack App</h1>
-    </div>
+      <div>
+          <Navbar />
+          <ExplorePage/>
+          <Carousel />
+      </div>
+
   );
 }
 
