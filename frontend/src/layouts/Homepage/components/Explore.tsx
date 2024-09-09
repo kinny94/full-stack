@@ -1,4 +1,4 @@
-export const ExplorePage = () => {
+export const Explore = () => {
     return (
         <div className="p-5 mb-4 bg-darg header">
             <div className="container-fliud py-5 text-white d-flex justify-content-center align-items-center">
