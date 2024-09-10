@@ -1,6 +1,65 @@
 import {Book} from "./Book";
+import {useEffect, useState} from "react";
+import BookModel from "../../../models/Book";
 
 export const Carousel = () => {
+
+    const [books, setBooks] = useState<BookModel[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchBooks = async () => {
+            const baseUrl: string = "http://localhost:8080/api/books";
+            const url: string = `${baseUrl}?page=0&size=9`;
+            const response = await fetch(url);
+
+            if (!response.ok) {
+                throw new Error("Could not fetch books.");
+            }
+
+            const reponseJson = await response.json();
+            const responseData = reponseJson._embedded.books;
+            const loadedBooks: BookModel[] = [];
+
+            for (const key in responseData) {
+                loadedBooks.push({
+                    id: responseData[key].id,
+                    title: responseData[key].title,
+                    author: responseData[key].author,
+                    description: responseData[key].description,
+                    copies: responseData[key].copies,
+                    copiesAvailable: responseData[key].copiesAvailable,
+                    category: responseData[key].category,
+                    img: responseData[key].img,
+                });
+            }
+
+            setBooks(loadedBooks);
+            setLoading(false);
+        };
+        fetchBooks().catch((error: any) => {
+            setLoading(false);
+            setError(error.message );
+        });
+    }, []);
+
+    if (loading) {
+        return (
+            <div className="container m-5">
+                <p>Loading...</p>
+            </div>
+        )
+    }
+
+    if (error) {
+        return (
+            <div className="container mt-5">
+                <p>{error}</p>
+            </div>
+        )
+    }
+
     return (
         <div className="container mt-5" style={{height: 550}}>
             <div className="homepage-carousel-title">
@@ -12,25 +71,31 @@ export const Carousel = () => {
 
                     <div className="carousel-item active">
                         <div className="row d-flex justify-content-center align-items-center">
-                            <Book />
-                            <Book />
-                            <Book />
+                            {
+                                books.slice(0, 3).map(book => (
+                                    <Book book={book} key={book.id} />
+                                ))
+                            }
                         </div>
                     </div>
 
                     <div className="carousel-item">
                         <div className="row d-flex justify-content-center align-items-center">
-                            <Book />
-                            <Book />
-                            <Book />
+                            {
+                                books.slice(3, 6).map(book => (
+                                    <Book book={book} key={book.id} />
+                                ))
+                            }
                         </div>
                     </div>
 
                     <div className="carousel-item">
                         <div className="row d-flex justify-content-center align-items-center">
-                            <Book />
-                            <Book />
-                            <Book />
+                            {
+                                books.slice(6, 9).map(book => (
+                                    <Book book={book} key={book.id} />
+                                ))
+                            }
                         </div>
                     </div>
                 </div>
@@ -51,7 +116,7 @@ export const Carousel = () => {
             { /* Mobile */}
             <div className="d-lg-none mt-3">
                 <div className="row d-flex justify-content-center align-items-center">
-                    <Book />
+                    <Book book={books[7]} key={books[7].id} />
                 </div>
 
             </div>
