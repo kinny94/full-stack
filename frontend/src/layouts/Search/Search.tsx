@@ -5,6 +5,7 @@ import {SearchBook} from "./components/SearchBook";
 import {Pagination} from "../utils/Pagination";
 
 export const Search = () => {
+
     const [books, setBooks] = useState<BookModel[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -12,11 +13,19 @@ export const Search = () => {
     const [booksPerPage] = useState(5);
     const [totalBooks, setTotalBooks] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
+    const [search, setSearch] = useState("");
+    const [searchUrl, setSearchUrl] = useState("");
 
     useEffect(() => {
         const fetchBooks = async () => {
             const baseUrl: string = "http://localhost:8080/api/books";
-            const url: string = `${baseUrl}?page=${currentPage - 1}&size=${booksPerPage}`;
+            let url: string = '';
+
+            if (searchUrl === '') {
+                url = `${baseUrl}?page=${currentPage - 1}&size=${booksPerPage}`;
+            } else {
+                url = baseUrl + searchUrl;
+            }
             const response = await fetch(url);
 
             if (!response.ok) {
@@ -52,7 +61,7 @@ export const Search = () => {
             setError(error.message );
         });
         window.scrollTo(0, 0);
-    }, [currentPage]);
+    }, [currentPage, searchUrl]);
 
     if (loading) {
         return (
@@ -68,6 +77,14 @@ export const Search = () => {
         )
     }
 
+    const searchHandleChange = () => {
+        if (search === "") {
+            setSearchUrl("");
+        } else {
+            setSearchUrl(`/search/findByTitleContaining?title=${search}&page=0&size=${booksPerPage}`);
+        }
+    }
+
     const indexOfLastBook: number = currentPage * booksPerPage;
     const indexOfFirstBook: number = indexOfLastBook - booksPerPage;
     let lastItem = booksPerPage * currentPage <= totalBooks ? booksPerPage * currentPage : totalBooks;
@@ -80,8 +97,14 @@ export const Search = () => {
                     <div className="row mt-5">
                         <div className="col-6">
                             <div className="d-flex">
-                                <input className="form-control me-2" type="search" placeholder="Search..."  aria-label="Search" />
-                                <button className="btn btn-outline-success">Search</button>
+                                <input
+                                    className="form-control me-2"
+                                    type="search"
+                                    placeholder="Search..."
+                                    aria-label="Search"
+                                    onChange={e => setSearch(e.target.value)}
+                                />
+                                <button className="btn btn-outline-success" onClick={() => searchHandleChange()}>Search</button>
                             </div>
                         </div>
                         <div className="col-4">
@@ -101,9 +124,18 @@ export const Search = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="mt-3">
-                        <h5>Number of results: ({totalBooks})</h5>
-                    </div>
+                    {
+                        totalBooks < 0 ?
+                            <>
+                                <div className="mt-3">
+                                    <h5>Number of results: ({totalBooks})</h5>
+                                </div>
+                            </> :
+                            <div className='m-5'>
+                                <h3>Can't find what you are looking for?</h3>
+                                <a type="button" className="btn main-color btn-md px-4 me-md fw-bold text-white" href="$#">Library Services</a>
+                            </div>
+                    }
                     <p>
                         {indexOfFirstBook + 1} to {lastItem} of {totalBooks} items:
                     </p>
