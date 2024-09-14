@@ -1,7 +1,9 @@
 package com.fullstack.bookstore.config;
 
+import com.fullstack.bookstore.entity.Book;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -41,5 +43,13 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/api/**", corsConfiguration); // Apply CORS to /api/**
 
         return new CorsFilter(source);
+    }
+
+    // Need this to expose ids after spring 3.1
+    @Bean
+    public RepositoryRestConfigurer repositoryRestConfigurer() {
+        return RepositoryRestConfigurer.withConfig(repositoryRestConfiguration ->
+                repositoryRestConfiguration.exposeIdsFor(Book.class)
+        );
     }
 }

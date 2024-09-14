@@ -5,6 +5,7 @@ import {Footer} from "./layouts/NavbarAndFooter/Footer";
 import {Home} from "./layouts/Homepage/Home";
 import {Search} from "./layouts/Search/Search";
 import {Route, Routes} from "react-router-dom";
+import {Checkout} from "./layouts/checkout/Checkout";
 
 export const App = () => {
   return (
@@ -14,6 +15,7 @@ export const App = () => {
               <Routes>
                   <Route path="/home"  element={<Home />} />
                   <Route path="/search" element={<Search />} />
+                  <Route path="/checkout/:bookId" element={<Checkout />} />
               </Routes>
           </div>
           <Footer />
