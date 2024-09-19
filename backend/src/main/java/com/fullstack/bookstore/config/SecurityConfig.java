@@ -1,6 +1,7 @@
 package com.fullstack.bookstore.config;
 
 import com.fullstack.bookstore.entity.Book;
+import com.fullstack.bookstore.entity.Review;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
@@ -49,7 +50,7 @@ public class SecurityConfig {
     @Bean
     public RepositoryRestConfigurer repositoryRestConfigurer() {
         return RepositoryRestConfigurer.withConfig(repositoryRestConfiguration ->
-                repositoryRestConfiguration.exposeIdsFor(Book.class)
+                repositoryRestConfiguration.exposeIdsFor(Book.class, Review.class)
         );
     }
 }
