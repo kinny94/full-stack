@@ -27,19 +27,20 @@ export const App = () => {
     return (
         <div className="d-flex flex-column min-vh-100">
             <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUrl} onAuthRequired={customAuthHandler}>
-            <Navbar/>
-            <div className="flex-grow-1">
-                <Routes>
-                    <Route path="/home" element={<Home/>}/>
-                    <Route path="/search" element={<Search/>}/>
-                    <Route path="/checkout/:bookId" element={<Checkout/>}/>
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore
-                    <Route path="/login" element={<LoginWidget config={oktaConfig}/>} />
-                    <Route path="/login/callback" element={<LoginCallback/>} />
-                </Routes>
-            </div>
-            <Footer/>
+                <Navbar/>
+                <div className="flex-grow-1">
+                    <Routes>
+                        <Route path="/" element={<Home/>}/>
+                        <Route path="/home" element={<Home/>}/>
+                        <Route path="/search" element={<Search/>}/>
+                        <Route path="/checkout/:bookId" element={<Checkout/>}/>
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore
+                        <Route path="/login" element={<LoginWidget config={oktaConfig}/>} />
+                        <Route path="/login/callback" element={<LoginCallback/>} />
+                    </Routes>
+                </div>
+                <Footer/>
             </Security>
         </div>
     );

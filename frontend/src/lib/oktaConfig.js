@@ -1,10 +1,10 @@
 export const oktaConfig = {
-    clientId: 'CULBaI8cbHGS8Uu5twjs7upNgCtCma8O',
-    issuer: 'https://dev-gtkw07f7bz84x264.us.auth0.com/oath2/default',
+    clientId: '0oajzen8gySwFjozG5d7',
+    issuer: 'https://dev-53658902.okta.com/oauth2/default',  // Added /oauth2/default
     redirectUri: 'http://localhost:3000/login/callback',
-    scopes: [
-        'openid', 'profile', 'email'
-    ],
+    scopes: ['openid', 'profile', 'email'],
     pkce: true,
-    disableHttpsCheck: true,
+    disableHttpsCheck: true, // Not recommended for production,
+    useInteractionCodeFlow: false,
+    useClassicEngine: true,
 }
