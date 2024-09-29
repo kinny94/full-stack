@@ -22,12 +22,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Disable CSRF protection for simplicity
+                .csrf(csrf -> csrf.disable()) // Disable CSRF protection
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/**").permitAll() // Allow all requests to /api/**
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll() // Allow any other request without authentication
                 )
-                .cors(withDefaults()); // Enable CORS with default configuration
+                .cors(withDefaults()); // Enable CORS
 
         return http.build();
     }
@@ -36,7 +36,7 @@ public class SecurityConfig {
     public CorsFilter corsFilter() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:8080")); // Allow localhost:3000 and localhost:8080
-        corsConfiguration.setAllowedMethods(List.of("GET")); // Customize allowed methods
+        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Allow GET, POST, PUT, DELETE, OPTIONS
         corsConfiguration.setAllowedHeaders(List.of("*")); // Allow all headers
         corsConfiguration.setAllowCredentials(true); // Allow credentials (cookies, authorization headers)
 
@@ -46,7 +46,6 @@ public class SecurityConfig {
         return new CorsFilter(source);
     }
 
-    // Need this to expose ids after spring 3.1
     @Bean
     public RepositoryRestConfigurer repositoryRestConfigurer() {
         return RepositoryRestConfigurer.withConfig(repositoryRestConfiguration ->
