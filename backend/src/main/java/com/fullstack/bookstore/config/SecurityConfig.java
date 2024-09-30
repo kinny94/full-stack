@@ -2,12 +2,16 @@ package com.fullstack.bookstore.config;
 
 import com.fullstack.bookstore.entity.Book;
 import com.fullstack.bookstore.entity.Review;
+import com.okta.spring.boot.oauth.Okta;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.accept.ContentNegotiationStrategy;
+import org.springframework.web.accept.HeaderContentNegotiationStrategy;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -22,13 +26,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Disable CSRF protection
+                .csrf(AbstractHttpConfigurer::disable) // Disable CSRF protection
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/**").permitAll() // Allow all requests to /api/**
-                        .anyRequest().permitAll() // Allow any other request without authentication
+                        .requestMatchers("/api/books/secure/**")
+                        .authenticated()  // Secure these endpoints
                 )
-                .cors(withDefaults()); // Enable CORS
-
+                .cors(withDefaults())
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults()))
+                .setSharedObject(ContentNegotiationStrategy.class, new HeaderContentNegotiationStrategy()); // Enable CORS
+        Okta.configureResourceServer401ResponseBody(http);
         return http.build();
     }
 
