@@ -10,6 +10,7 @@ import {OktaAuth, toRelativeUrl} from "@okta/okta-auth-js";
 import {oktaConfig} from "./lib/oktaConfig";
 import {LoginCallback, Security} from "@okta/okta-react";
 import LoginWidget from "./authentication/LoginWidget";
+import { ReviewList } from './layouts/checkout/ReviewList/ReviewList';
 
 const oktaAuth = new OktaAuth(oktaConfig);
 
@@ -32,6 +33,7 @@ export const App = () => {
                     <Routes>
                         <Route path="/" element={<Home/>}/>
                         <Route path="/home" element={<Home/>}/>
+                        <Route path="/reviewlist/:bookid" element={<ReviewList/>}/>
                         <Route path="/search" element={<Search/>}/>
                         <Route path="/checkout/:bookId" element={<Checkout/>}/>
                         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
