@@ -26,14 +26,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable) // Disable CSRF protection
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/books/secure/**")
-                        .authenticated()  // Secure these endpoints
+                        .requestMatchers("/api/books/secure/**").authenticated()  // Only secure this endpoint
+                        .anyRequest().permitAll()  // Allow all other requests
                 )
                 .cors(withDefaults())
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults()))
-                .setSharedObject(ContentNegotiationStrategy.class, new HeaderContentNegotiationStrategy()); // Enable CORS
+                .setSharedObject(ContentNegotiationStrategy.class, new HeaderContentNegotiationStrategy());
         Okta.configureResourceServer401ResponseBody(http);
         return http.build();
     }
@@ -41,13 +41,13 @@ public class SecurityConfig {
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:8080")); // Allow localhost:3000 and localhost:8080
-        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Allow GET, POST, PUT, DELETE, OPTIONS
-        corsConfiguration.setAllowedHeaders(List.of("*")); // Allow all headers
-        corsConfiguration.setAllowCredentials(true); // Allow credentials (cookies, authorization headers)
+        corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:8080"));
+        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                corsConfiguration.setAllowedHeaders(List.of("*"));
+        corsConfiguration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/api/**", corsConfiguration); // Apply CORS to /api/**
+        source.registerCorsConfiguration("/api/**", corsConfiguration);
 
         return new CorsFilter(source);
     }
