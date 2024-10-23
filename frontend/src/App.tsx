@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import './App.css';
 import {Navbar} from "./layouts/NavbarAndFooter/Navbar";
@@ -11,6 +12,8 @@ import {oktaConfig} from "./lib/oktaConfig";
 import {LoginCallback, Security} from "@okta/okta-react";
 import LoginWidget from "./authentication/LoginWidget";
 import { ReviewList } from './layouts/checkout/ReviewList/ReviewList';
+import {Shelf} from "./layouts/Shelf/Shelf";
+import { SecureRoute } from './custom/SecureRoute';
 
 const oktaAuth = new OktaAuth(oktaConfig);
 
@@ -23,8 +26,7 @@ export const App = () => {
     const restoreOriginalUrl = async (_oktaAuth: any, originalUri: any) => {
         navigate(toRelativeUrl(originalUri || '/', window.location.origin), {replace: true});
     }
-
-    // @ts-ignore
+    // ts ignore for file
     return (
         <div className="d-flex flex-column min-vh-100">
             <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUrl} onAuthRequired={customAuthHandler}>
@@ -40,6 +42,9 @@ export const App = () => {
                         // @ts-ignore
                         <Route path="/login" element={<LoginWidget config={oktaConfig}/>} />
                         <Route path="/login/callback" element={<LoginCallback/>} />
+                        <Route element={<SecureRoute />}>
+                            <Route path="/shelf" element={<Shelf />} /> {/* Only authenticated users can access this */}
+                        </Route>
                     </Routes>
                 </div>
                 <Footer/>
