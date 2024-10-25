@@ -1,10 +1,13 @@
 package com.fullstack.bookstore.controller;
 
 import com.fullstack.bookstore.entity.Book;
+import com.fullstack.bookstore.responseModels.ShelfCurrentLoans;
 import com.fullstack.bookstore.service.BookService;
 import com.fullstack.bookstore.utils.JWTExtraction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin("http://localhost:3000")
 @RestController
@@ -16,6 +19,12 @@ public class BookController {
     @Autowired
     public BookController(BookService bookService) {
         this.bookService = bookService;
+    }
+
+    @GetMapping("/secure/currentLoans")
+    public List<ShelfCurrentLoans> currentLoans(@RequestHeader(value="Authorization") String token) throws Exception {
+        String userEmail = JWTExtraction.payloadJWTExtraction(token, "\"sub\"");
+        return bookService.currentLoansList(userEmail);
     }
 
     @GetMapping("/secure/checkout/user")
