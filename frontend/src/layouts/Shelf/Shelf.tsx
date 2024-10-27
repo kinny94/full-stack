@@ -1,3 +1,5 @@
+import {Loans} from "./components/Loans";
+
 export const Shelf = () => {
     return (
         <div className="container">
@@ -23,7 +25,7 @@ export const Shelf = () => {
                             role="tab"
                             aria-controls="nav-histroy"
                             aria-selected="false">
-                            your History
+                            Your History
                         </button>
                     </div>
                 </nav>
@@ -34,7 +36,7 @@ export const Shelf = () => {
                         role="tabpanel"
                         aria-labelledby="nav-loans-tab"
                     >
-                        <p>Loans</p>
+                        <Loans />
                     </div>
                     <div
                         className="tab-pane fade"
