@@ -67,7 +67,23 @@ export const Loans = () =>  {
         };
         const response = await fetch(url, requestOptions);
         if (!response.ok) {
-            throw new Error("Something went wrong!");
+            throw new Error("Something went wrong while returning book!");
+        }
+        setCheckout(!checkout);
+    }
+
+    async function renewLoan(bookId: number) {
+        const url = `http://localhost:8080/api/books/secure/renew/loan?bookId=${bookId}`
+        const requestOptions = {
+            method: "PUT",
+            headers: {
+                Authorization: `Bearer ${authState?.accessToken?.accessToken}`,
+                'Content-type': 'application/json',
+            }
+        };
+        const response = await fetch(url, requestOptions);
+        if (!response.ok) {
+            throw new Error("Something went wrong while renewing loan!");
         }
         setCheckout(!checkout);
     }
@@ -141,7 +157,7 @@ export const Loans = () =>  {
                                         </div>
                                     </div>
                                     <hr/>
-                                    <LoansModal shelfCurrentLoan={shelfCurrentLoan} mobile={false} returnBook={returnBook}/>
+                                    <LoansModal shelfCurrentLoan={shelfCurrentLoan} mobile={false} returnBook={returnBook} renewLoan={renewLoan}/>
                                 </div>
                             ))}
                     </> :
@@ -221,7 +237,7 @@ export const Loans = () =>  {
                                         </div>
                                     </div>
                                     <hr/>
-                                    <LoansModal shelfCurrentLoan={shelfCurrentLoan} mobile={true} returnBook={returnBook}/>
+                                    <LoansModal shelfCurrentLoan={shelfCurrentLoan} mobile={true} returnBook={returnBook} renewLoan={renewLoan}/>
                                 </div>
                             ))}
                     </> :

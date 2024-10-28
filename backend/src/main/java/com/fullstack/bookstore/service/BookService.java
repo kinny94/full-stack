@@ -75,7 +75,7 @@ public class BookService {
 
                 TimeUnit time = TimeUnit.DAYS;
 
-                long differenceInTime = time.convert(parsedCheckoutDate.getTime() - checkoutDate.getTime(), TimeUnit.MILLISECONDS);
+                long differenceInTime = time.convert(checkoutDate.getTime() - parsedCheckoutDate.getTime(), TimeUnit.MILLISECONDS);
                 shelfCurrentLoans.add(new ShelfCurrentLoans(book, (int) differenceInTime));
             }
         }
