@@ -2,8 +2,10 @@ package com.fullstack.bookstore.service;
 
 import com.fullstack.bookstore.dao.BookRepository;
 import com.fullstack.bookstore.dao.CheckoutRepository;
+import com.fullstack.bookstore.dao.HistoryRepository;
 import com.fullstack.bookstore.entity.Book;
 import com.fullstack.bookstore.entity.Checkout;
+import com.fullstack.bookstore.entity.History;
 import com.fullstack.bookstore.responseModels.ShelfCurrentLoans;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,8 +24,9 @@ public class BookService {
 
     private BookRepository bookRepository;
     private CheckoutRepository checkoutRepository;
+    private HistoryRepository historyRepository;
 
-    public BookService(BookRepository bookRepository, CheckoutRepository checkoutRepository) {
+    public BookService(BookRepository bookRepository, CheckoutRepository checkoutRepository, HistoryRepository historyRepository) {
         this.bookRepository = bookRepository;
         this.checkoutRepository = checkoutRepository;
     }
@@ -91,6 +94,16 @@ public class BookService {
         book.get().setCopiesAvailable(book.get().getCopiesAvailable() + 1);
         bookRepository.save(book.get());
         checkoutRepository.deleteById(validateCheckout.getId());
+        History history = new History(
+                userEmail,
+                validateCheckout.getCheckoutDate(),
+                LocalDate.now().toString(),
+                book.get().getTitle(),
+                book.get().getAuthor(),
+                book.get().getDescription(),
+                book.get().getImg()
+        );
+        historyRepository.save(history);
     }
 
     public void renewLoan(String userEmail, Long bookId) throws Exception {
