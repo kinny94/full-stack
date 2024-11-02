@@ -1,4 +1,5 @@
 import {Loans} from "./components/Loans";
+import {HistoryComponent} from "./components/HistoryComponent";
 
 export const Shelf = () => {
     return (
@@ -44,7 +45,7 @@ export const Shelf = () => {
                         role="tabpanel"
                         aria-labelledby="nav-history-tab"
                     >
-                        <p>Checkout History</p>
+                        <HistoryComponent />
                     </div>
                 </div>
             </div>
