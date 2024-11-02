@@ -113,7 +113,7 @@ export const HistoryComponent = () => {
                 </> :
                 <>
                     <h3 className="mt-4">Currently no history: </h3>
-                    <Link className="btn btn-primary" to={`search`}>Search for a new book</Link>
+                    <Link className="btn btn-primary" to={`/search`}>Search for a new book</Link>
                 </>
             }
             {

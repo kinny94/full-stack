@@ -49,6 +49,8 @@ public class History {
 
      @Column(name = "img")
     private String img;
+
+    public History() {}
 }
 
 
