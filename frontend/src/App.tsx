@@ -14,6 +14,7 @@ import LoginWidget from "./authentication/LoginWidget";
 import { ReviewList } from './layouts/checkout/ReviewList/ReviewList';
 import {Shelf} from "./layouts/Shelf/Shelf";
 import { SecureRoute } from './custom/SecureRoute';
+import {Messages} from "./layouts/messages/Messages";
 
 const oktaAuth = new OktaAuth(oktaConfig);
 
@@ -44,6 +45,9 @@ export const App = () => {
                         <Route path="/login/callback" element={<LoginCallback/>} />
                         <Route element={<SecureRoute />}>
                             <Route path="/shelf" element={<Shelf />} /> {/* Only authenticated users can access this */}
+                        </Route>
+                        <Route element={<SecureRoute />}>
+                            <Route path="/messages" element={<Messages />} /> {/* Only authenticated users can access this */}
                         </Route>
                     </Routes>
                 </div>
