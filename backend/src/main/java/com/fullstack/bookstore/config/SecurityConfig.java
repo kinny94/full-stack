@@ -1,6 +1,7 @@
 package com.fullstack.bookstore.config;
 
 import com.fullstack.bookstore.entity.Book;
+import com.fullstack.bookstore.entity.Message;
 import com.fullstack.bookstore.entity.Review;
 import com.okta.spring.boot.oauth.Okta;
 import org.springframework.context.annotation.Bean;
@@ -55,7 +56,7 @@ public class SecurityConfig {
     @Bean
     public RepositoryRestConfigurer repositoryRestConfigurer() {
         return RepositoryRestConfigurer.withConfig(repositoryRestConfiguration ->
-                repositoryRestConfiguration.exposeIdsFor(Book.class, Review.class)
+                repositoryRestConfiguration.exposeIdsFor(Book.class, Review.class, Message.class)
         );
     }
 }
