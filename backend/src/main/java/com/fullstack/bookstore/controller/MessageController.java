@@ -29,7 +29,7 @@ public class MessageController {
     public void putMessage(@RequestHeader(value="Authorization") String token,  @RequestBody AdminQuestionRequest adminQuestionRequest) throws Exception {
         String userEmail = JWTExtraction.payloadJWTExtraction(token, "\"sub\"");
         String admin = JWTExtraction.payloadJWTExtraction(token, "\"userType\"");
-        if (admin == null || admin.equals("admin")) {
+        if (admin == null || !admin.equals("admin")) {
             throw new Exception("Administrator page only!");
         }
         messageService.putMessage(adminQuestionRequest, userEmail);

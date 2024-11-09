@@ -29,7 +29,7 @@ public class MessageService {
 
     public void putMessage(AdminQuestionRequest adminQuestionRequest, String userEmail) throws Exception {
         Optional<Message> message = messageRepository.findById(adminQuestionRequest.getId());
-        if (message.isEmpty()) {
+        if (!message.isPresent()) {
             throw new Exception("Message not found");
         }
         message.get().setAdminEmail(userEmail);

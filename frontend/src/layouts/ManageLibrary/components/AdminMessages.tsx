@@ -4,6 +4,8 @@ import Message from "../../../models/Message";
 import {Spinner} from "../../utils/Spinner";
 import {Pagination} from "../../utils/Pagination";
 import {AdminMessage} from "./AdminMessage";
+// @ts-ignore
+import AdminMessageRequest from "./../../../models/AdminMessageRequest";
 
 export const AdminMessages = () => {
 
@@ -17,6 +19,8 @@ export const AdminMessages = () => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState<number>(0);
+
+    const [buttonSubmit, setButtonSubmit] = useState(false);
 
     useEffect(() => {
         const fetchUserMessages = async () => {
@@ -44,7 +48,7 @@ export const AdminMessages = () => {
             setErrorMessage(error.message);
         });
         window.scrollTo(0, 0);
-    }, [authState, currentPage]);
+    }, [authState, currentPage, buttonSubmit]);
 
     if (isLoadingMessages) {
         return (
@@ -60,6 +64,26 @@ export const AdminMessages = () => {
         )
     }
 
+    async function submitResponseToQuestion(id: number, response: string) {
+        const url = `http://localhost:8080/api/messages/secure/admin/message`;
+        if (authState && authState?.isAuthenticated && id !=null && response !== '') {
+            const messageAdminRequestModel: AdminMessageRequest = new AdminMessageRequest(id, response);
+            const requestOptions = {
+                method: 'PUT',
+                headers: {
+                    Authorization: `Bearer ${authState.accessToken?.accessToken}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(messageAdminRequestModel),
+            };
+            const messageAdminRequestionResponse = await fetch(url, requestOptions);
+            if (!messageAdminRequestionResponse.ok) {
+                throw new Error("Could not post new message");
+            }
+            setButtonSubmit(!buttonSubmit);
+        }
+    }
+
     const paginate = (page: number, size: number) => setCurrentPage(page);
 
     return (
@@ -70,7 +94,7 @@ export const AdminMessages = () => {
                     <h5>Pending Q/A: </h5>
                     {
                         messages.map(message => (
-                            <AdminMessage message={message} key={message.id} />
+                            <AdminMessage message={message} key={message.id} submitResponseToQuestion={submitResponseToQuestion}/>
                         ))
                     }
                 </> :

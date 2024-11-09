@@ -1,11 +1,19 @@
 import {FC, useState} from "react";
 import Message from "../../../models/Message";
 
-export const AdminMessage: FC<{message: Message}> = (props, key) => {
+export const AdminMessage: FC<{message: Message, submitResponseToQuestion: any}> = (props, key) => {
 
     const [displayWarning, setDisplayWarning] = useState(false);
     const [response, setResponse] = useState('');
 
+    function submitButton() {
+        if (props.message.id !== null && response !== '') {
+            props.submitResponseToQuestion(props.message.id, response);
+            setDisplayWarning(false);
+        } else {
+            setDisplayWarning(true);
+        }
+    }
     return (
         <div key={props.message.id}>
             <div className="card mt-2 shadow p-3 bg-body rounded">
@@ -27,7 +35,7 @@ export const AdminMessage: FC<{message: Message}> = (props, key) => {
                             <textarea className="form-control" id="exampleFormControlTextarea1" rows={3} onChange={e => setResponse(e.target.value)} value={response} />
                         </div>
                         <div>
-                            <button type="button" className="btn btn-primary mt-3">Submit response</button>
+                            <button type="button" className="btn btn-primary mt-3" onClick={submitButton}>Submit response</button>
                         </div>
                     </form>
                 </div>
