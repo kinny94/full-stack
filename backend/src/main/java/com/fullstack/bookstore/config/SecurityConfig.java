@@ -29,7 +29,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/books/secure/**", "/api/reviews/secure/**", "/api/messages/secure/**").authenticated()  // Only secure this endpoint
+                        .requestMatchers("/api/books/secure/**", "/api/reviews/secure/**", "/api/messages/secure/**", "/api/admin/secure/**").authenticated()  // Only secure this endpoint
                         .anyRequest().permitAll()  // Allow all other requests
                 )
                 .cors(withDefaults())

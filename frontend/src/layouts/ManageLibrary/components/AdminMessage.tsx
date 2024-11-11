@@ -14,6 +14,7 @@ export const AdminMessage: FC<{message: Message, submitResponseToQuestion: any}>
             setDisplayWarning(true);
         }
     }
+
     return (
         <div key={props.message.id}>
             <div className="card mt-2 shadow p-3 bg-body rounded">
