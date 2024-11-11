@@ -26,4 +26,32 @@ public class AdminController {
         }
         adminService.postBook(addBookRequest);
     }
+
+    @PutMapping("/secure/increase/book/quantity")
+    public void increaseBookQuantity(@RequestHeader(value="Authorization") String token, @RequestParam Long bookId) throws Exception {
+        String admin = JWTExtraction.payloadJWTExtraction(token, "\"userType\"");
+        if (admin == null || !admin.equals("admin")) {
+            throw new Exception("Admin access only!");
+        }
+        adminService.increaseBookQuantity(bookId);
+    }
+
+    @PutMapping("/secure/decrease/book/quantity")
+    public void decreaseBookQuantity(@RequestHeader(value="Authorization") String token, @RequestParam Long bookId) throws Exception {
+        String admin = JWTExtraction.payloadJWTExtraction(token, "\"userType\"");
+        if (admin == null || !admin.equals("admin")) {
+            throw new Exception("Admin access only!");
+        }
+        adminService.increaseBookQuantity(bookId);
+    }
+
+    @DeleteMapping("/secure/delete/book")
+    public void deleteBook(@RequestHeader(value="Authorization") String token, @RequestParam Long bookId) throws Exception {
+        String admin = JWTExtraction.payloadJWTExtraction(token, "\"userType\"");
+        if (admin == null || !admin.equals("admin")) {
+            throw new Exception("Admin access only!");
+        }
+        adminService.deleteBook(bookId);
+    }
+
 }
