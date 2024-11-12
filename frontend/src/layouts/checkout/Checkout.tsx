@@ -33,7 +33,7 @@ export const Checkout = () => {
 
     useEffect(() => {
         const fetchBook = async () => {
-            const baseUrl: string = `http://localhost:8080/api/books/${bookId}`;
+            const baseUrl: string = `${process.env.REACT_APP_API_SERVER_URL}/books/${bookId}`;
             const response = await fetch(baseUrl);
 
             if (!response.ok) {
@@ -63,7 +63,7 @@ export const Checkout = () => {
 
     useEffect(() => {
         const fetchBooksReviews = async () => {
-            const reviewUrl: string = `http://localhost:8080/api/reviews/search/findByBookId?bookId=${bookId}`;
+            const reviewUrl: string = `${process.env.REACT_APP_API_SERVER_URL}/reviews/search/findByBookId?bookId=${bookId}`;
             const responseReviews = await fetch(reviewUrl);
 
             if (!responseReviews.ok) {
@@ -103,7 +103,7 @@ export const Checkout = () => {
     useEffect(() => {
         const fetchUserReviewBook = async () => {
             if (authState && authState.isAuthenticated) {
-                const url = `http://localhost:8080/api/reviews/secure/user/book?bookId=${bookId}`;
+                const url = `${process.env.REACT_APP_API_SERVER_URL}/reviews/secure/user/book?bookId=${bookId}`;
                 const requestOptions = {
                     method: "GET",
                     headers: {
@@ -129,7 +129,7 @@ export const Checkout = () => {
     useEffect(() => {
         const fetchUserCurrentLoansCount = async () => {
             if (authState && authState.isAuthenticated) {
-                const url = `http://localhost:8080/api/books/secure/loans/count`;
+                const url = `${process.env.REACT_APP_API_SERVER_URL}/books/secure/loans/count`;
                 const requestOptions = {
                     method: "GET",
                     headers: {
@@ -155,7 +155,7 @@ export const Checkout = () => {
     useEffect(() => {
         const fetchUSerCheckoutBooks = async () => {
             if (authState && authState.isAuthenticated) {
-                const url = `http://localhost:8080/api/books/secure/checkout/user?bookId=${bookId}`;
+                const url = `${process.env.REACT_APP_API_SERVER_URL}/books/secure/checkout/user?bookId=${bookId}`;
                 const requestOptions = {
                     method: "GET",
                     headers: {
@@ -194,7 +194,7 @@ export const Checkout = () => {
     }
 
     async function checkoutBook() {
-        const url = `http://localhost:8080/api/books/secure/checkout?bookId=${book?.id}`;
+        const url = `${process.env.REACT_APP_API_SERVER_URL}/books/secure/checkout?bookId=${book?.id}`;
         const requestOptions = {
             method: "PUT",
             headers: {
@@ -215,7 +215,7 @@ export const Checkout = () => {
         }
 
         const reviewRequest = new ReviewRequest(starInput, bookId, reviewDescription);
-        const url = `http://localhost:8080/api/reviews/secure`;
+        const url = `${process.env.REACT_APP_API_SERVER_URL}/reviews/secure`;
         const requestOptions = {
             method: "POST",
             headers: {

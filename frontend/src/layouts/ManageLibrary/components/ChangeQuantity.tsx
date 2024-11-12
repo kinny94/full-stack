@@ -18,7 +18,7 @@ export const ChangeQuantity: React.FC<{book: BookModel, deleteBook: any}> = (pro
     }, []);
 
     async function increaseQuantity() {
-        const url = `http://localhost:8080/api/admin/secure/increase/book/quantity?bookId=${props.book.id}`;
+        const url = `${process.env.REACT_APP_API_SERVER_URL}/admin/secure/increase/book/quantity?bookId=${props.book.id}`;
         const requestOptions = {
             method: "PUT",
             headers: {
@@ -35,7 +35,7 @@ export const ChangeQuantity: React.FC<{book: BookModel, deleteBook: any}> = (pro
     }
 
     async function decreaseQuantity() {
-        const url = `http://localhost:8080/api/admin/secure/decrease/book/quantity?bookId=${props.book.id}`;
+        const url = `${process.env.REACT_APP_API_SERVER_URL}/admin/secure/decrease/book/quantity?bookId=${props.book.id}`;
         const requestOptions = {
             method: "PUT",
             headers: {
@@ -52,7 +52,7 @@ export const ChangeQuantity: React.FC<{book: BookModel, deleteBook: any}> = (pro
     }
 
     async function deleteBook() {
-        const url = `http://localhost:8080/api/admin/secure/delete/book?bookId=${props.book.id}`;
+        const url = `${process.env.REACT_APP_API_SERVER_URL}/admin/secure/delete/book?bookId=${props.book.id}`;
         const requestOptions = {
             method: "DELETE",
             headers: {

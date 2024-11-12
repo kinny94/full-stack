@@ -38,7 +38,7 @@ export const AddNewBook = () => {
     }
 
     async function submitNewBook() {
-        const url = `http://localhost:8080/api/admin/secure/add/book`;
+        const url = `${process.env.REACT_APP_API_SERVER_URL}/admin/secure/add/book`;
         if (authState?.isAuthenticated && title != '' && description != '' && author != '' && category != '' &&copies > 0) {
             const book: AddBookRequest = new AddBookRequest(title, author, description, copies, category);
             book.img = selectedImage;
